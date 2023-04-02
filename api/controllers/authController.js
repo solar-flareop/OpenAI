@@ -2,7 +2,7 @@ const userModel = require("../models/userModel");
 const errorResponse = require("../utils/errorResponse");
 
 // JWT TOKEN
-const sendToken = (user, statusCode, res) => {
+exports.sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken(res);
   res.status(statusCode).json({
     success: true,
@@ -11,13 +11,13 @@ const sendToken = (user, statusCode, res) => {
 };
 
 //REGISTER
-const registerController = async (req, res) => {
+const registerController = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
     //exisitng user
     const exisitingEmail = await userModel.findOne({ email });
     if (exisitingEmail) {
-      return next(new errorResponse("Email is already register", 500));
+      return next(new errorResponse("Email is already register", 401));
     }
     const user = await userModel.create({ username, email, password });
     this.sendToken(user, 201, res);
@@ -28,7 +28,7 @@ const registerController = async (req, res) => {
 };
 
 //LOGIN
-const loginController = async (req, res) => {
+const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     //validation
@@ -60,9 +60,16 @@ const logoutController = async (req, res) => {
   });
 };
 
+//test alluser
+const alluser = async (req, res) => {
+  const users = await userModel.find({});
+  res.status(200).json(users);
+};
+
 module.exports = {
   registerController,
   loginController,
   logoutController,
-  sendToken,
+
+  alluser,
 };

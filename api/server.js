@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 //file imports
 const connectDB = require("./config/dbConfig");
 const authRoutes = require("./routes/authRoute");
+const openaiRoutes = require("./routes/openAiRoute");
 const errorHandler = require("./middlewares/errorMiddleware");
 
 //config
@@ -20,6 +21,7 @@ app.use(morgan("dev"));
 
 //API routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/openai", openaiRoutes);
 
 //DB Connection
 const PORT = process.env.PORT || 8080;

@@ -48,14 +48,15 @@ userSchema.methods.matchPassword = async function (password) {
 userSchema.methods.getSignedToken = function (res) {
   const accessToken = JWT.sign(
     { id: this._id },
-    prosess.env.JWT_ACCESS_SECRET,
-    { expiresIn: JWT_ACCESS_EXPIREIN }
+    process.env.JWT_ACCESS_SECRET,
+    { expiresIn: "1d" }
   );
   const refreshToken = JWT.sign(
     { id: this._id },
-    prosess.env.JWT_REFRESH_TOKEN,
-    { expiresIn: JWT_REFRESH_EXPIREIN }
+    process.env.JWT_REFRESH_TOKEN,
+    { expiresIn: "5d" }
   );
+
   res.cookie("refreshToken", `${refreshToken}`, {
     maxAge: 86400 * 7000,
     httpOnly: true,

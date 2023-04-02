@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { saveAs } from "file-saver";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -14,12 +14,12 @@ import {
   Card,
 } from "@mui/material";
 
-const Summary = () => {
+const ImageGenerator = () => {
   const theme = useTheme();
   //mediaquery
   const isNotMobile = useMediaQuery("(min-width:1000px)");
 
-  const [summary, setSummary] = useState("");
+  const [image, setImage] = useState("");
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
@@ -27,10 +27,10 @@ const Summary = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/openai/summary",
+        "http://localhost:5000/api/v1/openai/imagegenerator",
         { text }
       );
-      setSummary(data);
+      setImage(data);
     } catch (err) {
       console.log(error);
       if (err.response.data.error) {
@@ -44,14 +44,15 @@ const Summary = () => {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(summary);
-    toast.success("Text Copied");
+  //download image
+  const handleImageDownload = () => {
+    let url = image;
+    saveAs(url, `image_${Date.now()}.png`);
   };
 
   return (
     <Box
-      width={isNotMobile ? "40%" : "80%"}
+      width={isNotMobile ? "45%" : "80%"}
       p={"2rem"}
       m={"2rem auto"}
       borderRadius={5}
@@ -64,7 +65,7 @@ const Summary = () => {
         </Alert>
       </Collapse>
       <form onSubmit={handleSubmit}>
-        <Typography variant="h3">Summarize Text</Typography>
+        <Typography variant="h3"> AI Generated Image</Typography>
 
         <TextField
           placeholder="Add your text"
@@ -84,38 +85,48 @@ const Summary = () => {
           size="large"
           sx={{ color: "white", mt: 2 }}
         >
-          Submit
+          Generate Image
         </Button>
         <Typography mt={2}>
           Not this tool... <Link to="/">Go Back </Link>
         </Typography>
       </form>
 
-      {summary && (
+      {image && (
         <Button
-          onClick={handleCopy}
+          onClick={handleImageDownload}
+          fullWidth
           variant="outlined"
           size="large"
           sx={{ color: "black", mt: 2 }}
         >
-          Copy
+          Dowload image
         </Button>
       )}
 
-      {summary ? (
+      {image ? (
         <Card
           sx={{
             mt: 4,
             border: 1,
             boxShadow: 0,
-            height: "25rem",
+            height: "35rem",
             overflow: "auto",
             borderRadius: 5,
             borderColor: "natural.medium",
             bgcolor: "background.default",
           }}
         >
-          <Typography p={2}>{summary}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              my: 5,
+            }}
+          >
+            <img src={image} alt="image" />
+          </Box>
         </Card>
       ) : (
         <Card
@@ -141,7 +152,7 @@ const Summary = () => {
               lineHeight: "450px",
             }}
           >
-            Summary Will Appear Here
+            Image Will Appear Here
           </Typography>
         </Card>
       )}
@@ -149,4 +160,4 @@ const Summary = () => {
   );
 };
 
-export default Summary;
+export default ImageGenerator;

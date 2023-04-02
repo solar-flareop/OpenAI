@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -13,13 +12,14 @@ import {
   useMediaQuery,
   Card,
 } from "@mui/material";
+import { toast } from "react-hot-toast";
 
-const Summary = () => {
+const Question = () => {
   const theme = useTheme();
   //mediaquery
   const isNotMobile = useMediaQuery("(min-width:1000px)");
 
-  const [summary, setSummary] = useState("");
+  const [words, setWords] = useState("");
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
@@ -27,10 +27,10 @@ const Summary = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/openai/summary",
+        "http://localhost:5000/api/v1/openai/question",
         { text }
       );
-      setSummary(data);
+      setWords(data);
     } catch (err) {
       console.log(error);
       if (err.response.data.error) {
@@ -45,7 +45,7 @@ const Summary = () => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(summary);
+    navigator.clipboard.writeText(words);
     toast.success("Text Copied");
   };
 
@@ -64,10 +64,12 @@ const Summary = () => {
         </Alert>
       </Collapse>
       <form onSubmit={handleSubmit}>
-        <Typography variant="h3">Summarize Text</Typography>
+        <Typography variant="h3">
+          Generate 10 questions for any interview
+        </Typography>
 
         <TextField
-          placeholder="Add your text"
+          placeholder="Enter experience and role"
           type="text"
           required
           multiline={true}
@@ -84,14 +86,14 @@ const Summary = () => {
           size="large"
           sx={{ color: "white", mt: 2 }}
         >
-          Submit
+          Generate
         </Button>
         <Typography mt={2}>
           Not this tool... <Link to="/">Go Back </Link>
         </Typography>
       </form>
 
-      {summary && (
+      {words && (
         <Button
           onClick={handleCopy}
           variant="outlined"
@@ -102,7 +104,7 @@ const Summary = () => {
         </Button>
       )}
 
-      {summary ? (
+      {words ? (
         <Card
           sx={{
             mt: 4,
@@ -115,7 +117,9 @@ const Summary = () => {
             bgcolor: "background.default",
           }}
         >
-          <Typography p={2}>{summary}</Typography>
+          <pre>
+            <Typography p={2}>{words}</Typography>
+          </pre>
         </Card>
       ) : (
         <Card
@@ -141,7 +145,7 @@ const Summary = () => {
               lineHeight: "450px",
             }}
           >
-            Summary Will Appear Here
+            Questions Will Appear Here
           </Typography>
         </Card>
       )}
@@ -149,4 +153,4 @@ const Summary = () => {
   );
 };
 
-export default Summary;
+export default Question;
