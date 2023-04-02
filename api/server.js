@@ -17,7 +17,7 @@ app.use(errorHandler);
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://toolkit.onrender.com", "http://localhost:5173"],
+    origin: ["https://protoolkit.netlify.app"],
   })
 );
 
