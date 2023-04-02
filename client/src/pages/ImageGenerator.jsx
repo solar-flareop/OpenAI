@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   Card,
 } from "@mui/material";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const ImageGenerator = () => {
   const theme = useTheme();
@@ -26,10 +27,9 @@ const ImageGenerator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/openai/imagegenerator",
-        { text }
-      );
+      const { data } = await axios.post(`${URL}/api/v1/openai/imagegenerator`, {
+        text,
+      });
       setImage(data);
     } catch (err) {
       console.log(error);

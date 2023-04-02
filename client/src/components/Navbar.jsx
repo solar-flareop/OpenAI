@@ -2,6 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const Navbar = () => {
   const theme = useTheme();
@@ -10,7 +11,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/v1/auth/logout");
+      await axios.post(`${URL}/api/v1/auth/logout`);
       localStorage.removeItem("authToken");
       toast.success("Logged out successfully");
       navigate("/login");

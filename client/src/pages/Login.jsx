@@ -13,6 +13,7 @@ import {
   Alert,
   useMediaQuery,
 } from "@mui/material";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const Login = () => {
   const theme = useTheme();
@@ -28,13 +29,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const { data } = await axios.post(`${URL}/api/v1/auth/login`, {
+        email,
+        password,
+      });
       localStorage.setItem("authToken", true);
       toast.success("Logged in successfully");
       navigate("/");

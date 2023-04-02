@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "password is required"],
-    minlength: [3, "password should have min 3 characters"],
+    minlength: [1, "password should have min 1 character"],
   },
   customerId: {
     type: String,

@@ -13,6 +13,7 @@ import {
   Card,
 } from "@mui/material";
 import { toast } from "react-hot-toast";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const ChatBot = () => {
   const theme = useTheme();
@@ -26,10 +27,9 @@ const ChatBot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/openai/chatbot",
-        { text }
-      );
+      const { data } = await axios.post(`${URL}/api/v1/openai/chatbot`, {
+        text,
+      });
       setResponse(data.content);
     } catch (err) {
       console.log(error);

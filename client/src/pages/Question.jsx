@@ -13,6 +13,7 @@ import {
   Card,
 } from "@mui/material";
 import { toast } from "react-hot-toast";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const Question = () => {
   const theme = useTheme();
@@ -26,10 +27,9 @@ const Question = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/openai/question",
-        { text }
-      );
+      const { data } = await axios.post(`${URL}/api/v1/openai/question`, {
+        text,
+      });
       setWords(data);
     } catch (err) {
       console.log(error);

@@ -29,8 +29,8 @@ const HomePage = () => {
         <HomeBox
           typo1Text="Javascript Converter"
           navigateLink="/jsconverter"
-          typo2Text=" Interview Questions"
-          typo3Text="High quality interview questions"
+          typo2Text=" Text to Code"
+          typo3Text="Code from simple English Commands"
           logo={<TbBrandJavascript size={80} color="#87db6e" />}
         />
         <HomeBox

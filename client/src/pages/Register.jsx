@@ -13,6 +13,7 @@ import {
   Alert,
   useMediaQuery,
 } from "@mui/material";
+const URL = import.meta.env.VITE_BASE_URL;
 
 const Register = () => {
   const theme = useTheme();
@@ -28,7 +29,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/v1/auth/register", {
+      await axios.post(`${URL}/api/v1/auth/register`, {
         username,
         email,
         password,
